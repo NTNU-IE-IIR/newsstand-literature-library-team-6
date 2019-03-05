@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'application'
+    id "org.sonarqube" version "2.7"
+    id 'jacoco'
+}
+
+group 'bookstore'
+version '0.1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = 'com.bookstore.App'
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "Java :: Bookstore"
+        property "sonar.projectKey", "com.bookstore:"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
+        property "sonar.coverage.exclusions", "/src/main/java/com/bookstore/UserInterface.java"
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.bookstore.App'
+        )
+    }
+}
+test {
+    useJUnitPlatform()
+}
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+}
